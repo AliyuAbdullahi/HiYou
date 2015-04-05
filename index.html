@@ -77,7 +77,7 @@
         $messageBox.val('');
       });
       socket.on('new message',function(data){
-        $chat.append(data+"<br/>");
+        $chat.append('<b>'+data.nick+":<br/>"+data.msg+"<br/>");
         console.log(data);
       });
     });
