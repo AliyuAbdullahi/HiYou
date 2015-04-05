@@ -1,21 +1,53 @@
 <html>
 <head>
   <title>Hi You</title>
+    <!-- <link rel="stylesheet" type="text/css" href="/css/styles.css"> -->
   <style>
+  body{
+    background-color: #ECC0A1;
+  }
+#titleitem{
+  margin: 20px auto;
+  text-align: center;
+  font-family: arial;
+  color: white;
+  font-size: 40px;
+}
+
+  #toolbar {
+    position: relative;
+    width: 100%;
+    height: 70px;
+      box-shadow: 5px 5px 5px 0px lightgray;
+    top: 0;
+    left: 0;
+    padding: 5px 10px; /* some styling, please note overall height of the object will be 35px due to 5px padding on top/bottom. */
+    background: #51321D; /* some styling */
+    border-bottom: none; /* some styling */
+}
 #chat{
-  height:500px;
+  height:auto;
+  background-color: #F2E8E1;
+  padding:10px;
 }
 #contentWrap{
   display: none;
+  margin-top: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 #chatWrap{
   float: left;
   border: 1px #000 solid;
+  border-radius: 6px;
+  border-width: 5px;
+  border-color: green;
 }
 
   </style>
 </head>
 <body>
+<div id="toolbar"><p id="titleitem">HiYou</p></div>
 <div id="nickWrap">
   <p>Enter a username:</p>
   <p id="nickError"></p>
@@ -77,7 +109,7 @@
         $messageBox.val('');
       });
       socket.on('new message',function(data){
-        $chat.append('<b>'+data.nick+":<br/>"+data.msg+"<br/>");
+        $chat.append('<p style="background-color:#BEE2E9; color:#746634;font-size1:14px;"><b>'+data.nick+":</p><br/>"+data.msg+"<br/>");
         console.log(data);
       });
     });

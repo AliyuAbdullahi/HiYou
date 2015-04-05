@@ -7,6 +7,8 @@ server.listen(3000);
 app.get('/',function(req,res){
   res.sendfile(__dirname+'/index.html');
 });
+
+
 io.sockets.on('connection',function(socket){
   socket.on('new user',function(data, callback){
     if(nicknames.indexOf(data) != -1){
