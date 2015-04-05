@@ -5,22 +5,72 @@
 #chat{
   height:500px;
 }
+#contentWrap{
+  display: none;
+}
+#chatWrap{
+  float: left;
+  border: 1px #000 solid;
+}
+
   </style>
 </head>
 <body>
-  <div id = "chat"></div>
-    <form id="send-message">
-        <input size="35" id = "message"></input>
-        <input type="submit"></input>
-    </form>
+<div id="nickWrap">
+  <p>Enter a username:</p>
+  <p id="nickError"></p>
+  <form id="setNick">
+    <input size="35" id="nickname"></input>
+    <input type="submit"></input>
+  </form>
+</div>
+
+<div id="contentWrap">
+    <div id="chatWrap">
+      <div id = "chat"></div>
+         <form id="send-message">
+            <input size="35" id = "message"></input>
+            <input type="submit"></input>
+         </form>
+      </div>
+    <div id="users"></div>
+</div>
+
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
     jQuery(function($){
       var socket = io.connect();
-      var $messageForm = $('#send-message');
+      var $nickForm = $('#setNick');
+      var $nickError = $('#nickError');
+      var $nickBox = $('#nickname');
+      var $users = $('#users');
+        var $messageForm = $('#send-message');
       var $messageBox = $('#message');
       var $chat = $('#chat');
+
+    $nickForm.submit(function(e){
+      e.preventDefault();
+      socket.emit('new user', $nickBox.val(),function(data){
+        if(data){
+          $('#nickWrap').hide();
+          $('#contentWrap').show();
+        }
+        else{
+          $nickError.html('The user already exits');
+        }
+
+      });
+      $nickBox.val('');
+    });
+      socket.on('usernames',function(data){
+        var html = '';
+        for (var i=0; i<data.length; i++){
+          html+=data[i]+'<br/>';
+        }
+        $users.html(html);
+      });
+
       $messageForm.submit (function(e){
         e.preventDefault();
         socket.emit('send message',$messageBox.val());
@@ -34,3 +84,40 @@
     </script>
 </body>
 </html>
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>Socket.io Messages</title>
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        
+        <!- The form -->
+       <!--  <form id="create-message" class="well row">
+            <fieldset class="col-lg-8 col-offset-2">
+                <legend>Socket.io Messages</legend>
+                <input type="text" placeholder="Name" id="name" name="name" class="col-lg-12" />
+                <textarea placeholder="Message" id="message" name="message" class="col-lg-12"></textarea>
+                <input type="submit" value="Create Message" class="btn btn-default col-lg-12" />
+            </fieldset>
+        </form> -->
+
+        <!-- The Messages -->
+     <!--    <div class="col-lg-8 col-offset-2 row">
+            <ul id="messages" class="list-group">
+                <!- Messages go here -->
+        <!--     </ul>
+        </div> -->
+ 
+        <!-- Third Party Dependencies -->
+      <!--   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+ -->
+        <!-- Socket.io -->
+        <!-- <script src="/socket.io/socket.io.js"></script> -->
+
+        <!-- Our app.js file -->
+        <!-- <script type="text/javascript" src="/js/app.js"></script> -->
+
+    <!-- </body> -->
+<!-- </html> -->
