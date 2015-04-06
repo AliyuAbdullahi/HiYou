@@ -6,6 +6,20 @@
   body{
     background-color: #ECC0A1;
   }
+  input[type=text] {padding:5px; border:2px solid #ccc; 
+-webkit-border-radius: 5px;
+border-radius: 5px;
+}
+input[type=text]:focus {border-color:#333; 
+height: 40px;
+margin: 8px;}
+
+input[type=submit] {padding:10px 17px; 
+font-weight: bold;
+  background:#ccc; border:0 none;
+cursor:pointer;
+-webkit-border-radius: 5px;
+border-radius: 5px; }
 #titleitem{
   margin: 20px auto;
   text-align: center;
@@ -13,7 +27,23 @@
   color: white;
   font-size: 40px;
 }
+#enter{
+  font-family: 'Droid serif', serif;
+  font-weight: bold;
+  font-size: 20px;
+  color: green;
 
+}
+#usersonline{
+   font-weight: bold;
+  font-family: 'Signika','Open Sans',"Great Vibes", sans-serif,
+}
+
+#usercontainer{
+  margin-left: 50%;
+    background-color: #F5F0DD;
+  border-radius: 5px;
+}
   #toolbar {
     position: relative;
     width: 100%;
@@ -25,6 +55,8 @@
     background: #51321D; /* some styling */
     border-bottom: none; /* some styling */
 }
+
+
 #chat{
   height:auto;
   background-color: #F2E8E1;
@@ -49,7 +81,7 @@
 <body>
 <div id="toolbar"><p id="titleitem">HiYou</p></div>
 <div id="nickWrap">
-  <p>Enter a username:</p>
+  <p id="enter">Enter a username:</p>
   <p id="nickError"></p>
   <form id="setNick">
     <input size="35" id="nickname"></input>
@@ -61,11 +93,13 @@
     <div id="chatWrap">
       <div id = "chat"></div>
          <form id="send-message">
-            <input size="35" id = "message"></input>
+            <input size="35" rows="10" placeholder="enter message here..." id = "message"></input>
             <input type="submit"></input>
          </form>
       </div>
+      <div id="usercontainer"><p>Users</p>
     <div id="users"></div>
+    </div>
 </div>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -86,7 +120,7 @@
       socket.emit('new user', $nickBox.val(),function(data){
         if(data){
           $('#nickWrap').hide();
-          $('#contentWrap').show();
+          $('#contentWrap').show("slow");
         }
         else{
           $nickError.html('The user already exits');
@@ -98,7 +132,7 @@
       socket.on('usernames',function(data){
         var html = '';
         for (var i=0; i<data.length; i++){
-          html+=data[i]+'<br/>';
+          html+='<p id="usersonline">'+data[i]+'</p><br/>';
         }
         $users.html(html);
       });
